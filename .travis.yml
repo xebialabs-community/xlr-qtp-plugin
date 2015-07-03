@@ -5,4 +5,7 @@ deploy:
     secure: Myd5YVhRfVYDbIdrMViDot6aVz7MIY22SsMFtj2/40o854SL6zixMgU6HfeELWDF+C8Bl8DoD6+oeZrMHeZJV7Ofpa4Qlg38mjUu6eEiiRUWs5O55sfpupm+52CwKSEXRT+nS9fVjAPhoiFyB6sshIGPt/O/lKN0sYVW8FyvvnyuUc7reZjFo4zGC8zakZH0AiF8ZmyQ7SqWGeH5w6RyujBbrSO3+E3KGpNlfjdrbKDjlaOajcQPjnvOwrK0LJaMqtPYbZG8V66pOYrN6TDWGF+LlYJ1oY3qWwlXXycKumcxcC3QJvL2T1sliM5aoN9B9wieMrbmwm1xq093AFUmR4cCiG1ADmi6cniFzhWIjPyEwyyZcY/6r28+ZB6oWyDLfxTlHsfXuQL1XmzRYJMvIRNGoQyHas5qn1D+hGy4f/7MgFqNp3hO2Elyigkh7Z78KZFQ5IozO8QlFDAZTjRdf7Q3xwTFd1Hy5zYQWln/g55oJ4H9iO7Usk/x04XlETJZ06JMQhutBKlpyl6oHOZSRAWeyLvgk4SPMBdpyaUkVzIci4skApOh6oRoyobW0qWGq+H+8BmFkK6n00hjXkztJmUS+o5g0HujZ3MCpux1PP+aGluMK8EbFktTl2CGb3fyhvnSyPk2I+u2epOa37Np8RIwZSKA3G9zxD242eYAAKk=
   file: build/libs/xlr-qtp-plugin-1.0.0.jar
   on:
+    all_branches: true
+    tags: true
     repo: xebialabs-community/xlr-qtp-plugin
+
