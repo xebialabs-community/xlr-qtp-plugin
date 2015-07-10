@@ -76,7 +76,39 @@ class WinrmRemoteCScript():
     def getStderrLines(self):
         return self.stderr.getOutputLines()
 
-script = WinrmRemoteCScript(username, password, address, connectionType, timeout, allowDelegate, cscriptExecutable, remotePath, script)
+qtpScript = """
+Dim qtApp
+Dim qtTest
+Set qtApp = CreateObject("QuickTest.Application") 
+If Not qtApp.launched Then 
+  qtApp.Launch 
+End If 
+
+qtApp.Visible = False
+qtApp.Options.Run.ImageCaptureForTestResults = "OnError"
+qtApp.Options.Run.RunMode = "Fast"
+qtApp.Options.Run.ViewResults = False
+qtApp.Open "%s", True 
+
+Set qtTest = qtApp.Test
+qtTest.Settings.Run.OnError = "NextStep" 
+qtTest.Run
+
+'print even when run via cscript //B
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set stdout = fso.GetStandardStream(1)
+stdout.WriteLine qtTest.LastRunResults.Status
+Set stdout = Nothing
+Set fso = Nothing
+
+qtTest.Close 
+qtApp.quit
+
+Set qtTest = Nothing
+Set qtApp = Nothing
+""" % (testPath)
+
+script = WinrmRemoteCScript(username, password, address, connectionType, timeout, allowDelegate, cscriptExecutable, remotePath, qtpScript)
 exitCode = script.execute()
 
 output = script.getStdout()
