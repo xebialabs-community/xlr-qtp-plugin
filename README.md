@@ -1,26 +1,18 @@
 # xlr-qtp-plugin
-### Intro 
+
+### Introduction
+
 ![image](documentation/qtp-icon.png) 
-QuickTest Professional (QTP) is now known as HP Unified Functional Testing.  This plugin should work with either product to support the execution of test sets via the products Visual Basic Script (VBS) interface.  The plugin supports a script block that allows you to enter VBS to be executed on the QTP server.
 
-### Example XLR Template
+QuickTest Professional (QTP) is now known as HP Unified Functional Testing.  This plugin should work with either product to support the execution of test sets via the products' Visual Basic Script (VBS) interface.
 
-QTP Tests can be executed via VBS in a single step.  One VBS script could start one test or a series of tests.  From the XL Release Template this can show up as a single step. 
+### Supported Tasks
 
-![image](documentation/QTP_Template.png)
+#### Remote CScript Task
 
-The VBS can set an exit code which XLR will use to interpert if the step was executed correctly.  You can also use this exit code in your VBS to let XLR if it should continue with the release.  If you VBS examines the test results and determines that the results should stop the release a non-zero exit code will stop XL Release from continuing.  This can be useful in automated releases to stop the processing or to begin a roll back release.
+Invokes a VBS script on a Windows machine via WinRM, e.g. to execute a QTP test set. An example script that might be used for QTP is:
 
-### QTP Step Configuration
-
-The QTP step is designed to be executed on a Windows server using WinRM.  This plugin takes the usual WinRM configuration parameters as well as a remote path and a VBS script.  The XL Rlease step looks like the following:
-
-![image](documentation/QTP_Step.png)
-
-An example of VBS that might be useful is as follows:
-
-
-````
+```
 Dim qtApp
 Dim qtTest
 
@@ -68,6 +60,12 @@ qtApp.quit
 'Release Object
 Set qtTest = Nothing
 Set qtApp = Nothing
-````
+```
 
-The QTP step returns the standard out, standard error and exit code from the script.  You can use this information later in your release template to make decisions and manage the release.
+The task returns the standard out, standard error and exit code from the script.  You can use this information later in your release template to determine the test result and make decisions during the release.
+
+![image](documentation/QTP_Step.png)
+
+**Input properties**
+
+The task provides the standard properties of the [Windows remote script task](https://docs.xebialabs.com/xl-release/concept/introduction-to-the-xl-release-remote-script-plugin.html).
