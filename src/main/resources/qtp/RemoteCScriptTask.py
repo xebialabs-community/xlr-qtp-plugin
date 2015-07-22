@@ -12,8 +12,8 @@ from com.xebialabs.overthere.cifs import CifsConnectionBuilder
 from com.xebialabs.overthere.cifs import CifsConnectionType
 from com.xebialabs.overthere.util import CapturingOverthereExecutionOutputHandler, OverthereUtils
 
-class WinrmRemotePowerShellScript():
-    def __init__(self, username, password, address, connectionType, timeout, allowDelegate, remotePath, script):
+class WinrmRemoteCScript():
+    def __init__(self, username, password, address, connectionType, timeout, allowDelegate, cscriptExecutable, remotePath, script):
         self.options = ConnectionOptions()
         self.options.set(ConnectionOptions.USERNAME, username)
         self.options.set(ConnectionOptions.PASSWORD, password)
@@ -27,7 +27,7 @@ class WinrmRemotePowerShellScript():
         self.allowDelegate = allowDelegate
         # WINRM_INTERNAL only
         self.timeout = timeout
-        
+
         self.stdout = CapturingOverthereExecutionOutputHandler.capturingHandler()
         self.stderr = CapturingOverthereExecutionOutputHandler.capturingHandler()
 
@@ -47,11 +47,12 @@ class WinrmRemotePowerShellScript():
         try:
             connection = Overthere.getConnection(CifsConnectionBuilder.CIFS_PROTOCOL, self.options)
             connection.setWorkingDirectory(connection.getFile(self.remotePath))
-            # upload the script and pass it to powershell
-            targetFile = connection.getTempFile('uploaded-powershell-script', '.ps1')
+            # upload the script and pass it to cscript.exe
+            targetFile = connection.getTempFile('uploaded-script', '.vbs')
             OverthereUtils.write(String(self.script).getBytes(), targetFile)
             targetFile.setExecutable(True)
-            scriptCommand = CmdLine.build('powershell', '-NoLogo', '-NonInteractive', '-InputFormat', 'None', '-ExecutionPolicy', 'Unrestricted', '-Command', targetFile.getPath())
+            # run cscript in batch mode
+            scriptCommand = CmdLine.build(cscriptExecutable, '//B', '//nologo', targetFile.getPath())
             return connection.execute(self.stdout, self.stderr, scriptCommand)
         except Exception, e:
             stacktrace = StringWriter()
@@ -75,7 +76,7 @@ class WinrmRemotePowerShellScript():
     def getStderrLines(self):
         return self.stderr.getOutputLines()
 
-script = WinrmRemotePowerShellScript(username, password, address, connectionType, timeout, allowDelegate, remotePath, script)
+script = WinrmRemoteCScript(username, password, address, connectionType, timeout, allowDelegate, cscriptExecutable, remotePath, script)
 exitCode = script.execute()
 
 output = script.getStdout()
@@ -96,4 +97,3 @@ else:
     print "----"
 
     sys.exit(exitCode)
-
