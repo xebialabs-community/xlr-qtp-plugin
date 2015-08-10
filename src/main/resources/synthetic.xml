@@ -8,7 +8,7 @@ FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALA
            xmlns="http://www.xebialabs.com/deployit/synthetic" 
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <type type="qtp.RemoteCScriptTask" extends="xlrelease.PythonScript">
+    <type type="qtp.RunTest" extends="xlrelease.PythonScript">
         <property name="iconLocation" default="qtp/qtp-icon.png" hidden="true" />
         <!-- ######## WinRM Parameters ####### -->
         <property name="username" category="input"/>
@@ -23,7 +23,9 @@ FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALA
         <!-- ######## CScript Parameters ####### -->
         <property name="cscriptExecutable" category="input" hidden="true" default="cscript" />
         <property name="remotePath" category="input"/>
-        <property name="script" size="large" category="input"/>
+        
+        <!-- ######## QTP Parameters ####### -->
+        <property name="testPath" category="input" />
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err" required="false" category="output" description="Error stream of the process."/>
         <property name="exitCode" required="false" category="output" description="Exit code of the process."/>
