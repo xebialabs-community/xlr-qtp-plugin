@@ -21,3 +21,5 @@ The task returns the standard out, standard error and exit code from the script.
 In addition to the standard properties of the [Windows remote script task](https://docs.xebialabs.com/xl-release/concept/introduction-to-the-xl-release-remote-script-plugin.html), this task provides the following properties:
 
 * `testPath`: The path to the test set to be run. _Required_
+
+Note that due to limitations of the UFT/QTP VBS interface, only test sets of type GUI Test are supported.  Type API Test is not supported directly, but XL Release can invoke a GUI Test which then invokes an API Test.
